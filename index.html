@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Artist Universe — Interactive 3D Image Sphere</title>
+  <meta name="description" content="An interactive WebGL sphere of artworks. Hover a glowing trigger image to expand its collection into a gallery." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/",
+        "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main>
+    <canvas id="scene" aria-label="Interactive sphere of images"></canvas>
+    <div id="vignette"></div>
+    <article id="group-label" class="label" aria-live="polite">
+      <span class="label__eyebrow" id="label-count"></span>
+      <h2 class="label__title" id="label-title"></h2>
+      <p class="label__desc" id="label-desc"></p>
+    </article>
+    <!-- Array Navigation Indicator (Bottom Right) -->
+    <nav id="array-indicator" class="array-indicator" aria-label="Collections indicator navigation"></nav>
+    <!-- Intro Loader: Spinning Ring of Key Trigger Images -->
+    <div id="intro-loader" class="intro-loader" aria-live="polite">
+      <div class="intro-loader__center">
+        <div class="intro-loader__ring" id="intro-ring"></div>
+        <div class="intro-loader__core">
+          <span class="intro-loader__eyebrow">Initializing Universe</span>
+          <h2 class="intro-loader__title">Artist Universe</h2>
+          <span class="intro-loader__status" id="intro-status">Loading series…</span>
+        </div>
+      </div>
+    </div>
+    <div id="loader" style="display:none">Loading textures… <span id="loader-pct">0%</span></div>
+
+    <!-- Fullscreen Gallery Overlay -->
+    <div id="gallery-modal" class="gallery-modal" aria-hidden="true" role="dialog" aria-label="Artwork Gallery">
+      <div class="gallery-modal__backdrop" id="gallery-backdrop"></div>
+      <div class="gallery-modal__content">
+        <header class="gallery-modal__header">
+          <div class="gallery-modal__meta">
+            <span class="gallery-modal__eyebrow" id="gallery-counter">1 of 18</span>
+            <h2 class="gallery-modal__title" id="gallery-title">Collection Title</h2>
+          </div>
+          <button type="button" class="gallery-modal__close" id="gallery-close" aria-label="Close gallery">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </header>
+
+        <div class="gallery-modal__stage">
+          <button type="button" class="gallery-modal__nav gallery-modal__nav--prev" id="gallery-prev" aria-label="Previous artwork">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+
+          <div class="gallery-modal__frame">
+            <img id="gallery-image" class="gallery-modal__image" src="" alt="Artwork view" />
+          </div>
+
+          <button type="button" class="gallery-modal__nav gallery-modal__nav--next" id="gallery-next" aria-label="Next artwork">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <nav class="gallery-modal__strip" id="gallery-strip" aria-label="Thumbnail strip">
+          <!-- Populated dynamically -->
+        </nav>
+      </div>
+    </div>
+  </main>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
